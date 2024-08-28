@@ -1,14 +1,16 @@
-import { useCounter } from '@monorepo/my-react-hooks';
+import { buildHooks } from '@monorepo/my-react-hooks';
 import { useStore } from '@nanostores/react';
-import { $count, watchCount } from '@monorepo/my-store';
+import * as store  from '@monorepo/my-store';
+
+const { useCounter } = buildHooks(store);
 
 export function useCounterDirect() {
-  const count = useStore($count);
+  const count = useStore(store.$count);
 
-  return [count, () => $count.set(count + 1)] as const;
+  return [count, () => store.$count.set(count + 1)] as const;
 }
 
-watchCount();
+store.watchCount();
 
 const CustomHookPackage = () => {
   const [count, increment] = useCounter();
